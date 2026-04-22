@@ -1,0 +1,102 @@
+# ==========================================
+# ML FOLDER .gitignore
+# ==========================================
+# Files to exclude from Git for ML pipeline
+
+# ==========================================
+# 1. MODEL FILES (Pre-trained XGBoost models)
+# ==========================================
+# ✅ XGBoost models ARE tracked in Git (small size: 0.31 MB each)
+# Only exclude temporary/backup model files
+models/*.backup
+models/*.old
+models/*~
+
+# ==========================================
+# 2. DATA FILES (Real-world datasets)
+# ==========================================
+# Raw CSV data - Can be very large and contain sensitive info
+data/raw/**/*.csv
+data/raw/**/*.xlsx
+data/raw/**/*.xls
+data/raw/
+
+# Processed data - Generated from raw data, can be regenerated
+data/processed/**/*.csv
+data/processed/**/*.pkl
+data/processed/
+
+# ==========================================
+# 3. RESULTS & OUTPUTS (Generated files)
+# ==========================================
+# Visualizations - PNG/JPG images (can be regenerated)
+results/visualizations/**/*.png
+results/visualizations/**/*.jpg
+results/visualizations/**/*.jpeg
+results/visualizations/
+
+# Predictions - Generated output (can be regenerated)
+results/predictions/**/*.csv
+results/predictions/**/*.json
+results/predictions/
+
+# ==========================================
+# 4. PYTHON CACHE & DEPENDENCIES
+# ==========================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# ==========================================
+# 5. VIRTUAL ENVIRONMENT
+# ==========================================
+venv/
+ENV/
+env/
+.venv
+
+# ==========================================
+# 6. IDE & EDITOR FILES
+# ==========================================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+.env
+.env.local
+
+# ==========================================
+# 7. JUPYTER NOTEBOOKS CACHE
+# ==========================================
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+*.nbconvert
+
+# ==========================================
+# 8. OS FILES
+# ==========================================
+.DS_Store
+Thumbs.db
+*.log

@@ -1,0 +1,626 @@
+.live-page {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: var(--light);
+  min-height: calc(100vh - 70px);
+}
+
+/* Search Section */
+.search-section {
+  margin-bottom: 2rem;
+}
+
+.search-form {
+  display: flex;
+  gap: 1rem;
+  max-width: 600px;
+}
+
+/* Favorites Buttons Section */
+.favorites-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.fav-button-wrapper {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.fav-button {
+  padding: 0.75rem 1.5rem;
+  background: #f1f5f9;
+  color: #334155;
+  border: 2px solid #e2e8f0;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.95rem;
+}
+
+.fav-button:hover {
+  background: #e2e8f0;
+  border-color: #cbd5e1;
+}
+
+.fav-button.active {
+  background: linear-gradient(135deg, #1e40af 0%, #0f766e 100%);
+  color: #fff;
+  border-color: #1e40af;
+  box-shadow: 0 4px 12px rgba(30, 64, 175, 0.3);
+}
+
+.remove-fav-btn {
+  padding: 0.6rem;
+  background: #fee2e2;
+  color: #dc2626;
+  border: none;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+}
+
+.remove-fav-btn:hover {
+  background: #fca5a5;
+  color: #7f1d1d;
+}
+
+.search-input-wrapper {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-radius: 0.5rem;
+  border: 2px solid #e2e8f0;
+  transition: border-color 0.3s ease;
+}
+
+.search-input-wrapper:focus-within {
+  border-color: var(--primary);
+}
+
+.search-icon {
+  position: absolute;
+  left: 1rem;
+  color: var(--gray);
+  font-size: 1.2rem;
+}
+
+.search-input {
+  flex: 1;
+  padding: 0.75rem 1rem 0.75rem 2.5rem;
+  border: none;
+  background: transparent;
+  font-size: 1rem;
+  font-family: inherit;
+}
+
+/* Autocomplete Suggestions */
+.suggestions-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border: 2px solid #e2e8f0;
+  border-top: none;
+  border-radius: 0 0 0.5rem 0.5rem;
+  max-height: 300px;
+  overflow-y: auto;
+  z-index: 100;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.suggestion-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  color: #1e293b;
+  font-size: 0.95rem;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.suggestion-item:last-child {
+  border-bottom: none;
+}
+
+.suggestion-item:hover {
+  background-color: #f1f5f9;
+}
+
+.suggestion-icon {
+  color: var(--primary);
+  opacity: 0.6;
+  font-size: 0.9rem;
+}
+
+.search-button {
+  padding: 0.75rem 2rem;
+  background: linear-gradient(135deg, #1e40af 0%, #0f766e 100%);
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.search-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(30, 64, 175, 0.3);
+}
+
+/* Empty State */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 70vh;
+  text-align: center;
+  color: #64748b;
+}
+
+.empty-state-icon {
+  font-size: 5rem;
+  color: var(--primary);
+  margin-bottom: 2rem;
+  opacity: 0.3;
+}
+
+.empty-state h2 {
+  font-size: 2.2rem;
+  color: var(--dark);
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+.empty-state p {
+  font-size: 1.05rem;
+  color: #64748b;
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+.empty-state-hint {
+  font-size: 0.95rem;
+  color: var(--accent);
+  font-weight: 600;
+  margin-top: 1.5rem;
+}
+
+.search-input:focus {
+  outline: none;
+}
+
+.search-input::placeholder {
+  color: #cbd5e1;
+}
+
+.search-btn {
+  background: var(--primary);
+  color: #fff;
+  padding: 0.75rem 2rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.search-btn:hover {
+  background: #1e40af;
+  transform: translateY(-2px);
+}
+
+/* Current AQI Card */
+.current-aqi-card {
+  background: #fff;
+  border-radius: 1rem;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: var(--shadow-md);
+  border-left: 5px solid;
+}
+
+.aqi-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+}
+
+.city-name {
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--dark);
+  margin-bottom: 0.5rem;
+}
+
+.timestamp {
+  color: var(--gray);
+  font-size: 0.9rem;
+}
+
+.favorite-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--gray);
+  transition: all 0.3s ease;
+}
+
+.favorite-btn:hover,
+.favorite-btn.active {
+  color: var(--danger);
+}
+
+.aqi-details {
+  display: flex;
+  gap: 3rem;
+  align-items: flex-start;
+}
+
+.aqi-main {
+  display: flex;
+  gap: 3rem;
+  align-items: center;
+  width: 100%;
+}
+
+.aqi-value-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 120px;
+}
+
+.aqi-value {
+  font-size: 4rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.aqi-status {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.aqi-label {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--gray);
+}
+
+/* Weather/Details Grid */
+.aqi-details-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  flex: 1;
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 0.75rem;
+  text-align: center;
+}
+
+.detail-icon {
+  font-size: 1.5rem;
+  color: var(--primary);
+}
+
+.detail-label {
+  font-size: 0.85rem;
+  color: var(--gray);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.detail-value {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--dark);
+}
+
+/* Weather Grid (alternative) */
+.weather-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  flex: 1;
+}
+
+.weather-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 0.75rem;
+  text-align: center;
+}
+
+.weather-icon {
+  font-size: 1.5rem;
+  color: var(--primary);
+}
+
+.weather-label {
+  font-size: 0.85rem;
+  color: var(--gray);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.weather-value {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--dark);
+}
+
+/* Pollutants Section */
+.pollutants-section {
+  margin-bottom: 2rem;
+}
+
+.pollutants-section h2 {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: var(--dark);
+  margin-bottom: 1.5rem;
+}
+
+.pollutants-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1.5rem;
+}
+
+.pollutant-card {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s ease;
+  border: 2px solid #f1f5f9;
+}
+
+.pollutant-card:hover {
+  box-shadow: var(--shadow-lg);
+  border-color: var(--primary);
+}
+
+.pollutant-icon {
+  font-size: 2rem;
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+}
+
+.pollutant-name {
+  font-weight: 600;
+  color: var(--dark);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+
+.pollutant-value {
+  font-size: 1.2rem;
+  font-weight: 900;
+  color: var(--primary);
+}
+
+/* 24-Hour Forecast */
+.forecast-24h {
+  margin-bottom: 2rem;
+}
+
+.forecast-24h h2,
+.forecast-5d h2 {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: var(--dark);
+  margin-bottom: 1.5rem;
+}
+
+.forecast-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 1rem;
+}
+
+.forecast-card-24h {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s ease;
+  border: 2px solid #f1f5f9;
+}
+
+.forecast-card-24h:hover {
+  box-shadow: var(--shadow-lg);
+}
+
+.forecast-time {
+  font-weight: 600;
+  color: var(--gray);
+  font-size: 0.85rem;
+  margin-bottom: 0.5rem;
+}
+
+.forecast-aqi {
+  font-size: 1.5rem;
+  font-weight: 900;
+  margin-bottom: 0.25rem;
+}
+
+.forecast-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: var(--gray);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+
+.forecast-temp {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--dark);
+}
+
+/* 5-Day Forecast */
+.forecast-5d {
+  margin-bottom: 2rem;
+}
+
+.forecast-5d-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
+
+.forecast-card-5d {
+  background: linear-gradient(135deg, #fff 0%, #f8fafc 100%);
+  padding: 1.5rem;
+  border-radius: 1rem;
+  border: 2px solid #f1f5f9;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s ease;
+}
+
+.forecast-card-5d:hover {
+  box-shadow: var(--shadow-lg);
+  border-color: var(--primary);
+  transform: translateY(-5px);
+}
+
+.forecast-date {
+  font-weight: 700;
+  color: var(--dark);
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+.forecast-range,
+.forecast-avg {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  padding: 0.5rem;
+  background: rgba(30, 64, 175, 0.05);
+  border-radius: 0.5rem;
+}
+
+.range-label,
+.avg-label {
+  color: var(--gray);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.range-values,
+.avg-value {
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.forecast-condition {
+  font-size: 0.9rem;
+  color: var(--gray);
+  text-align: center;
+  padding-top: 0.75rem;
+  border-top: 1px solid #e2e8f0;
+}
+
+.loading,
+.error {
+  text-align: center;
+  padding: 3rem;
+  font-size: 1.1rem;
+  color: var(--gray);
+}
+
+@media (max-width: 768px) {
+  .search-form {
+    flex-direction: column;
+  }
+
+  .search-button {
+    width: 100%;
+  }
+
+  .empty-state {
+    min-height: 50vh;
+    padding: 2rem;
+  }
+
+  .empty-state-icon {
+    font-size: 3.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .empty-state h2 {
+    font-size: 1.6rem;
+  }
+
+  .empty-state p {
+    font-size: 0.95rem;
+  }
+
+  .aqi-main {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .aqi-value {
+    font-size: 3rem;
+  }
+
+  .aqi-details-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  .detail-item {
+    padding: 0.75rem;
+  }
+
+  .forecast-grid,
+  .forecast-5d-grid {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  }
+
+  .pollutants-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
