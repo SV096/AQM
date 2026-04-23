@@ -31,16 +31,16 @@ const isMobileDevice = () => {
 // Helper function to convert error codes to user-friendly messages
 const getErrorMessage = (error) => {
   if (!error) return { title: '❌ Error', message: 'Something went wrong. Please try again.' };
-  
+
   const status = error.response?.status;
   const message = error.message?.toLowerCase() || '';
   const errorData = error.response?.data;
   const isMobile = isMobileDevice();
-  
+
   if (error.code === 'ECONNREFUSED') {
     return {
       title: '🔌 Connection Error',
-      message: isMobile 
+      message: isMobile
         ? "Can't connect. Check WiFi is turned on and connected. Try turning WiFi off and on again."
         : "Can't connect to the server. Check your internet connection and try again."
     };
@@ -48,7 +48,7 @@ const getErrorMessage = (error) => {
   if (error.code === 'ETIMEDOUT') {
     return {
       title: '⏱️ Slow Connection',
-      message: isMobile 
+      message: isMobile
         ? 'Connection is very slow. Try moving closer to your WiFi router or wait a moment before trying again.'
         : 'The request took too long. Check your internet connection and try again.'
     };
@@ -56,12 +56,12 @@ const getErrorMessage = (error) => {
   if (error.code === 'ENOTFOUND' || message.includes('network')) {
     return {
       title: '🌐 Network Error',
-      message: isMobile 
+      message: isMobile
         ? 'No internet connection found. Check that WiFi or mobile data is turned on and try again.'
         : 'Unable to reach the server. Check your internet connection.'
     };
   }
-  
+
   if (status === 404) {
     return {
       title: '❌ City Not Found',
@@ -94,10 +94,10 @@ const getErrorMessage = (error) => {
       message: errorData?.message || 'An error occurred. Please try again.'
     };
   }
-  
+
   return {
     title: '❌ Error',
-    message: isMobile 
+    message: isMobile
       ? 'Connection problem. Check your internet and try again.'
       : 'Could not load city data. Please check your internet and try again.'
   };
@@ -133,14 +133,15 @@ export const Favorites = () => {
         }
       );
       console.log('Response received:', response.data);
-      
+
       if (response.data && response.data.data) {
         setData(response.data.data);
-        console.log('Data set successfully:', response.data.data);
       } else {
-        const errMsg = 'Invalid data format received';
-        console.error(errMsg, response.data);
-        setError(errMsg);
+        console.error('Invalid data format received', response.data);
+        setError({
+          title: '⚠️ Invalid Data',
+          message: 'Invalid data format received'
+        });
       }
     } catch (err) {
       console.error('Error fetching city data:', err);
@@ -161,7 +162,7 @@ export const Favorites = () => {
     const updatedFavorites = favorites.filter(fav => fav.name !== cityName);
     localStorage.setItem('favoriteCities', JSON.stringify(updatedFavorites));
     setFavorites(updatedFavorites);
-    
+
     // If removed city was selected, clear selection
     if (selectedCity === cityName) {
       setSelectedCity(null);
