@@ -150,7 +150,6 @@ export const Favorites = () => {
         status: err.response?.status,
         data: err.response?.data
       });
-      const errMsg = err.response?.data?.message || err.message || 'Failed to load data';
       setError(getErrorMessage(err));
       setData(null);
     } finally {
