@@ -24,7 +24,7 @@ export const AuthProvider = ({ children }) => {
     const checkAuth = async () => {
       if (token) {
         try {
-          const response = await axios.get(`${API_URL}/auth/me`);
+          const response = await axios.get(`${API_URL}/api/auth/me`);
           setUser(response.data.user);
         } catch (err) {
           console.error('Auth check failed:', err);
@@ -40,7 +40,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const response = await axios.post(`${API_URL}/auth/login`, {
+      const response = await axios.post(`${API_URL}/api/auth/login`, {
         email,
         password
       });
@@ -55,7 +55,7 @@ export const AuthProvider = ({ children }) => {
 
   const signup = async (name, email, password) => {
     try {
-      const response = await axios.post(`${API_URL}/auth/signup`, {
+      const response = await axios.post(`${API_URL}/api/auth/signup`, {
         name,
         email,
         password
