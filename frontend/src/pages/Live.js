@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import axios from 'axios';
+import api from '../api';
 import { FiSearch, FiHeart, FiWind, FiDroplet, FiEye } from 'react-icons/fi';
 import { MdAir, MdThermostat } from 'react-icons/md';
 import './live.css';
@@ -31,7 +31,7 @@ const POPULAR_CITIES = [
   'Istanbul', 'Moscow', 'St. Petersburg', 'Krakow', 'Hamburg', 'Munich',
   'Milan', 'Venice', 'Florence', 'Naples', 'Palermo', 'Cardiff',
   'Edinburgh', 'Manchester', 'Liverpool', 'Malmo', 'Gothenburg',
-  
+
   // Asia
   'Tokyo', 'Beijing', 'Shanghai', 'Delhi', 'Mumbai', 'Bangkok',
   'Singapore', 'Hong Kong', 'Seoul', 'Jakarta', 'Manila', 'Ho Chi Minh City',
@@ -45,14 +45,14 @@ const POPULAR_CITIES = [
   'Taipei', 'Yokohama', 'Osaka', 'Kyoto', 'Yokohama', 'Kobe',
   'Busan', 'Incheon', 'Daegu', 'Daejeon', 'Bangkok', 'Yangon',
   'Naypyidaw', 'Phnom Penh', 'Vientiane', 'Kathmandu', 'Thimphu',
-  
+
   // Middle East & North Africa
   'Dubai', 'Abu Dhabi', 'Doha', 'Riyadh', 'Jeddah', 'Mecca',
   'Medina', 'Kuwait City', 'Manama', 'Muscat', 'Amman', 'Jerusalem',
   'Tel Aviv', 'Baghdad', 'Damascus', 'Beirut', 'Cairo', 'Alexandria',
   'Giza', 'Casablanca', 'Fez', 'Marrakech', 'Tunis', 'Algiers',
   'Rabat', 'Tangier', 'Tripoli', 'Benghazi', 'Sanaa', 'Aden',
-  
+
   // Africa
   'Lagos', 'Cairo', 'Kinshasa', 'Nairobi', 'Johannesburg', 'Dar es Salaam',
   'Accra', 'Addis Ababa', 'Khartoum', 'Kampala', 'Abuja', 'Ibadan',
@@ -60,7 +60,7 @@ const POPULAR_CITIES = [
   'Dakar', 'Ouagadougou', 'Niamey', 'Bamako', 'Freetown', 'Monrovia',
   'Luanda', 'Maputo', 'Harare', 'Lusaka', 'Botswana', 'Windhoek',
   'Gaborone', 'Lilongwe', 'Blantyre', 'Kigali', 'Bujumbura', 'Djibouti',
-  
+
   // North America
   'New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix', 'Philadelphia',
   'San Antonio', 'San Diego', 'Dallas', 'San Jose', 'Austin', 'Jacksonville',
@@ -72,7 +72,7 @@ const POPULAR_CITIES = [
   'Edmonton', 'Winnipeg', 'Quebec City', 'Mexico City', 'Guadalajara',
   'Monterry', 'Cancun', 'Acapulco', 'Puerto Vallarta', 'Cabo San Lucas',
   'Havana', 'Nassau', 'Santo Domingo', 'San Juan', 'Kingston', 'Port-au-Prince',
-  
+
   // South America
   'Sao Paulo', 'Rio de Janeiro', 'Buenos Aires', 'Lima', 'Bogota',
   'Salvador', 'Brasilia', 'Belo Horizonte', 'Manaus', 'Recife',
@@ -80,7 +80,7 @@ const POPULAR_CITIES = [
   'Cartagena', 'Quito', 'Guayaquil', 'Caracas', 'Maracaibo',
   'Santiago', 'Valparaiso', 'Asuncion', 'Montevideo', 'La Paz',
   'Cochabamba', 'Sucre', 'Paramaribo', 'Georgetown', 'Cayenne',
-  
+
   // Oceania & Pacific
   'Sydney', 'Melbourne', 'Brisbane', 'Perth', 'Adelaide', 'Hobart',
   'Auckland', 'Wellington', 'Christchurch', 'Hamilton', 'Tauranga',
@@ -94,21 +94,21 @@ const isMobileDevice = () => {
 
 // Helper function to convert error codes to user-friendly messages
 const getErrorMessage = (error) => {
-  if (!error) return { 
-    title: '❌ Error', 
-    message: 'Something went wrong. Please try again.' 
+  if (!error) return {
+    title: '❌ Error',
+    message: 'Something went wrong. Please try again.'
   };
-  
+
   const status = error.response?.status;
   const message = error.message?.toLowerCase() || '';
   const errorData = error.response?.data;
   const isMobile = isMobileDevice();
-  
+
   // Network/Connection errors
   if (error.code === 'ECONNREFUSED') {
     return {
       title: '🔌 Connection Error',
-      message: isMobile 
+      message: isMobile
         ? "Can't connect. Check WiFi is turned on and connected. Try turning WiFi off and on again."
         : "Can't connect to the server. Check your internet connection and try again."
     };
@@ -116,7 +116,7 @@ const getErrorMessage = (error) => {
   if (error.code === 'ETIMEDOUT') {
     return {
       title: '⏱️ Slow Connection',
-      message: isMobile 
+      message: isMobile
         ? 'Connection is very slow. Try moving closer to your WiFi router or wait a moment before trying again.'
         : 'The request took too long. Check your internet connection and try again.'
     };
@@ -124,12 +124,12 @@ const getErrorMessage = (error) => {
   if (error.code === 'ENOTFOUND' || message.includes('network')) {
     return {
       title: '🌐 Network Error',
-      message: isMobile 
+      message: isMobile
         ? 'No internet connection found. Check that WiFi or mobile data is turned on and try again.'
         : 'Unable to reach the server. Check your internet connection.'
     };
   }
-  
+
   // HTTP Status errors
   if (status === 404) {
     return {
@@ -163,11 +163,11 @@ const getErrorMessage = (error) => {
       message: errorData?.message || 'An error occurred. Please try again.'
     };
   }
-  
+
   // Generic fallback
   return {
     title: '❌ Error',
-    message: isMobile 
+    message: isMobile
       ? 'Connection problem. Check your internet and try again.'
       : 'Could not load city data. Please check your internet and try again.'
   };
@@ -198,14 +198,7 @@ export const Live = () => {
     setError(null);
     setData(null);
     try {
-      const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/forecast/city/${cityName}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`
-          }
-        }
-      );
+      const response = await api.get(`/forecast/city/${cityName}`);
       setData(response.data.data);
       setCurrentCity(cityName);
       setIsFavorite(false);
@@ -236,9 +229,9 @@ export const Live = () => {
   const handleInputChange = (e) => {
     const value = e.target.value;
     setSearchInput(value);
-    
+
     if (value.trim().length > 0) {
-      const filtered = POPULAR_CITIES.filter(c => 
+      const filtered = POPULAR_CITIES.filter(c =>
         c.toLowerCase().includes(value.toLowerCase())
       );
       setSuggestions(filtered);
@@ -258,10 +251,10 @@ export const Live = () => {
 
   const toggleFavorite = () => {
     if (!currentCity || !data) return;
-    
+
     let favorites = JSON.parse(localStorage.getItem('favoriteCities')) || [];
     const newIsFavorite = !isFavorite;
-    
+
     if (newIsFavorite) {
       // Add to favorites
       const newFav = {
@@ -273,7 +266,7 @@ export const Live = () => {
       // Remove from favorites
       favorites = favorites.filter(city => city.name !== currentCity);
     }
-    
+
     localStorage.setItem('favoriteCities', JSON.stringify(favorites));
     setIsFavorite(newIsFavorite);
   };
