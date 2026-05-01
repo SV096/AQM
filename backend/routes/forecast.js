@@ -105,7 +105,7 @@ router.get('/city/:city', authMiddleware, async (req, res) => {
     // STEP 7: Make ML predictions using XGBoost models
     // ============================================
     let aqi24hPrediction, aqi5dPrediction;
-    
+
     try {
       const mlPredictions = await predictWithML(features);
       aqi24hPrediction = mlPredictions.aqi_1d;
@@ -200,10 +200,34 @@ router.get('/city/:city', authMiddleware, async (req, res) => {
     });
   } catch (err) {
     console.error('❌ Forecast error:', err);
+
+    // Enhanced error logging for debugging
+    let errorDetails = {
+      message: err.message,
+      code: err.code,
+      name: err.name
+    };
+
+    // Log specific error types
+    if (err.response?.status) {
+      errorDetails.httpStatus = err.response.status;
+      errorDetails.apiResponse = err.response.data;
+      console.error(`❌ External API error (${err.response.status}):`, err.response.data);
+    }
+
+    if (err.code === 'ENOENT') {
+      errorDetails.detail = 'Python executable not found - check PYTHON_CMD env var';
+      console.error('❌ Python not found - cannot run ML inference');
+    }
+
+    // Log for analysis
+    console.error('📊 Error Details:', JSON.stringify(errorDetails, null, 2));
+
     res.status(500).json({
       success: false,
       message: 'Error fetching forecast',
-      error: err.message
+      error: err.message,
+      details: process.env.NODE_ENV === 'development' ? errorDetails : undefined
     });
   }
 });

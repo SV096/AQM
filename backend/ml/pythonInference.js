@@ -23,52 +23,58 @@ let modelStats = {
 async function predictWithML(features) {
   return new Promise((resolve, reject) => {
     const startTime = Date.now();
-    
+
     try {
       // Validate input
       if (!Array.isArray(features) || features.length !== 42) {
         throw new Error(`Expected 42 features, got ${features.length}`);
       }
-      
-      // Path to Python inference script
-      const pythonScriptPath = path.join(__dirname, '../..', 'ml', 'inference.py');
-      
-      // Spawn Python process
-      const python = spawn('python', [pythonScriptPath, JSON.stringify(features)], {
+
+      // Path to Python inference script - support both local dev and Docker deployment
+      const pythonScriptPath = path.join(__dirname, '../../ml/inference.py');
+
+      // Determine Python executable - try python3 first, then python
+      const pythonCmd = process.env.PYTHON_CMD || 'python3';
+
+      console.log(`🐍 Using Python command: ${pythonCmd}`);
+      console.log(`📍 Inference script path: ${pythonScriptPath}`);
+
+      // Spawn Python process with increased timeout for model loading
+      const python = spawn(pythonCmd, [pythonScriptPath, JSON.stringify(features)], {
         stdio: ['pipe', 'pipe', 'pipe'],
-        timeout: 30000 // 30 second timeout
+        timeout: 60000 // 60 second timeout for model loading + inference
       });
-      
+
       let stdout = '';
       let stderr = '';
-      
+
       // Capture stdout
       python.stdout.on('data', (data) => {
         stdout += data.toString();
       });
-      
+
       // Capture stderr (for debugging)
       python.stderr.on('data', (data) => {
         stderr += data.toString();
       });
-      
+
       // Handle process completion
       python.on('close', (code) => {
         const responseTime = Date.now() - startTime;
-        
+
         if (code === 0) {
           try {
             const result = JSON.parse(stdout);
-            
+
             if (result.success) {
               modelStats.successfulPredictions++;
-              modelStats.averageResponseTime = 
+              modelStats.averageResponseTime =
                 (modelStats.averageResponseTime + responseTime) / 2;
-              
+
               console.log(`✅ ML Inference successful (${responseTime}ms)`);
               console.log(`   - 1-day AQI: ${result.aqi_1d}`);
               console.log(`   - 5-day AQI: ${result.aqi_5d}`);
-              
+
               resolve(result);
             } else {
               throw new Error(result.error || 'Unknown inference error');
@@ -83,14 +89,22 @@ async function predictWithML(features) {
           reject(new Error(`Python inference failed with code ${code}`));
         }
       });
-      
+
       // Handle process errors
       python.on('error', (err) => {
         modelStats.failedPredictions++;
         console.error(`❌ Failed to spawn Python process: ${err.message}`);
-        reject(err);
+
+        // Check if it's a "command not found" error
+        if (err.code === 'ENOENT') {
+          console.error(`⚠️ Python executable not found at: ${pythonCmd}`);
+          console.error('💡 Try setting PYTHON_CMD environment variable to path of python/python3');
+          reject(new Error(`Python not found. Install Python or set PYTHON_CMD env var. Details: ${err.message}`));
+        } else {
+          reject(err);
+        }
       });
-      
+
     } catch (err) {
       modelStats.failedPredictions++;
       console.error(`❌ Prediction error: ${err.message}`);
