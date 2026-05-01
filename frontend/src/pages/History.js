@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import axios from 'axios';
+import api from '../api';  // ✅ Use configured api instance
 import { FiTrash2, FiSearch, FiClock } from 'react-icons/fi';
 import './history.css';
 
@@ -23,14 +23,7 @@ export const History = () => {
 
   const fetchHistory = async () => {
     try {
-      const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/user/history?limit=100`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`
-          }
-        }
-      );
+      const response = await api.get(`/user/history?limit=100`);  // ✅ Use api instance
       setHistory(response.data.history);
     } catch (err) {
       console.error('Error fetching history:', err);
@@ -42,14 +35,7 @@ export const History = () => {
   const clearHistory = async () => {
     if (window.confirm('Are you sure? This cannot be undone.')) {
       try {
-        await axios.delete(
-          `${process.env.REACT_APP_API_URL}/user/history`,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem('token')}`
-            }
-          }
-        );
+        await api.delete(`/user/history`);  // ✅ Use api instance
         setHistory([]);
       } catch (err) {
         console.error('Error clearing history:', err);
@@ -129,7 +115,7 @@ export const History = () => {
             transition={{ delay: idx * 0.05 }}
           >
             <div className="item-action-icon">{getActionIcon(item.action)}</div>
-            
+
             <div className="item-content">
               <div className="item-city">{item.city}</div>
               <div className="item-details">

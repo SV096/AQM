@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import axios from 'axios';
+import api from '../api';  // ✅ Use configured api instance
 import { FiTrash2, FiWind, FiEye, FiHeart } from 'react-icons/fi';
 import { MdAir, MdThermostat } from 'react-icons/md';
 import './live.css';
@@ -124,14 +124,7 @@ export const Favorites = () => {
     setData(null); // Clear previous data
     try {
       console.log(`Fetching data for ${cityName}...`);
-      const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/forecast/city/${cityName}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`
-          }
-        }
-      );
+      const response = await api.get(`/forecast/city/${cityName}`);  // ✅ Use api instance
       console.log('Response received:', response.data);
 
       if (response.data && response.data.data) {
